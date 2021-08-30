@@ -6,11 +6,11 @@ workspace 'Snakify'
 	flags				{ 'MultiProcessorCompile' }
 	startproject		'Snakify'
 	language			'C++'
-	cppdialect			'C++20'
+	cppdialect			'C++Latest'
 	warnings			'Extra'
 	conformancemode		'On'
 	staticruntime		'On'
-	files				{ '**.cc', '**.hh' }
+	files				{ 'Snakify/Main.cc' }
 	objdir				( '.bin_int/' .. output_dir .. '/%{prj.name}' )
 	targetdir			( '.bin/'	  .. output_dir .. '/%{prj.name}' )
 	debugdir			( '.bin/'	  .. output_dir .. '/%{prj.name}' )
