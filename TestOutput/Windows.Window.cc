@@ -3,14 +3,14 @@
 #include "Windows.API.hh"
 
 #include <string_view>
-export module vt.Windows.Window;
+export module Vitro.Windows.Window;
 
-import vt.App.AppContextBase;
-import vt.App.WindowBase;
-import vt.Core.Rectangle;
-import vt.Core.Unique;
-import vt.Core.Vector;
-import vt.Windows.Utils;
+import Vitro.App.AppContextBase;
+import Vitro.App.WindowBase;
+import Vitro.Core.Rectangle;
+import Vitro.Core.Unique;
+import Vitro.Core.Vector;
+import Vitro.Windows.Utils;
 
 namespace vt::windows
 {

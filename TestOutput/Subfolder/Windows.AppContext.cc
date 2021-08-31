@@ -3,18 +3,18 @@
 #include "Windows.API.hh"
 
 #include <new>
-export module vt.Windows.AppContext;
+export module Vitro.Windows.AppContext;
 
-import vt.App.AppContextBase;
-import vt.App.EventSystem;
-import vt.App.KeyCode;
-import vt.App.MouseCode;
-import vt.App.Window;
-import vt.App.WindowEvent;
-import vt.Core.Array;
-import vt.Core.Rectangle;
-import vt.Core.Vector;
-import vt.Windows.Utils;
+import Vitro.App.AppContextBase;
+import Vitro.App.EventSystem;
+import Vitro.App.KeyCode;
+import Vitro.App.MouseCode;
+import Vitro.App.Window;
+import Vitro.App.WindowEvent;
+import Vitro.Core.Array;
+import Vitro.Core.Rectangle;
+import Vitro.Core.Vector;
+import Vitro.Windows.Utils;
 
 namespace vt::windows
 {
@@ -62,8 +62,8 @@ namespace vt::windows
 
 	private:
 		HINSTANCE const instance_handle;
-		unsigned		key_repeats			= 0;
-		KeyCode			last_key_code		= {};
+		unsigned		key_repeats		  = 0;
+		KeyCode			last_key_code		  = {};
 		Int2			last_mouse_position = {};
 
 		static LRESULT CALLBACK forward_messages(HWND hwnd, UINT message, WPARAM w_param, LPARAM l_param)
@@ -98,9 +98,7 @@ namespace vt::windows
 				case WM_LBUTTONDBLCLK: get().on_mouse_event<DoubleClickEvent>(hwnd, MouseCode::Mouse1); return 0;
 				case WM_RBUTTONDBLCLK: get().on_mouse_event<DoubleClickEvent>(hwnd, MouseCode::Mouse2); return 0;
 				case WM_MBUTTONDBLCLK: get().on_mouse_event<DoubleClickEvent>(hwnd, MouseCode::Wheel); return 0;
-				case WM_XBUTTONDBLCLK:
-					get().on_mouse_event<DoubleClickEvent>(hwnd, map_extra_mouse_button(w_param));
-					return true;
+				case WM_XBUTTONDBLCLK: get().on_mouse_event<DoubleClickEvent>(hwnd, map_extra_mouse_button(w_param)); return true;
 				case WM_MOUSEWHEEL: get().on_vertical_scroll(hwnd, w_param); return 0;
 				case WM_MOUSEHWHEEL: get().on_horizontal_scroll(hwnd, w_param); return 0;
 			}
@@ -208,7 +206,7 @@ namespace vt::windows
 
 		void on_key_up(HWND hwnd, WPARAM wp)
 		{
-			key_repeats	  = 0;
+			key_repeats	= 0;
 			last_key_code = KeyCode::None;
 
 			auto window = find_window(hwnd);

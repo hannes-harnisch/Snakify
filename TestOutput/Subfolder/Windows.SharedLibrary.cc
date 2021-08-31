@@ -3,11 +3,11 @@
 #include "Windows.API.hh"
 
 #include <string_view>
-export module vt.Windows.SharedLibrary;
+export module Vitro.Windows.SharedLibrary;
 
-import vt.App.SharedLibraryBase;
-import vt.Core.Unique;
-import vt.Windows.Utils;
+import Vitro.App.SharedLibraryBase;
+import Vitro.Core.Unique;
+import Vitro.Windows.Utils;
 
 namespace vt::windows
 {

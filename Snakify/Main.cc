@@ -54,6 +54,8 @@ string snakify_token(string_view token)
 			(result += '_') += static_cast<char>(tolower(ch));
 	}
 
+	cout << "\t\"" << token.substr(1) << "\" -> \"" << string_view(result).substr(1) << "\"\n";
+
 	return result;
 }
 
@@ -85,6 +87,8 @@ void snakify_all_files(string_view input_path, vector<string_view> const& extens
 
 		if(!entry->is_regular_file())
 			continue;
+
+		cout << "Snakifying: " << path_str << endl;
 
 		// Check if current directory entry is a file with one of our desired extensions
 		auto cur_extension = entry->path().extension().string();

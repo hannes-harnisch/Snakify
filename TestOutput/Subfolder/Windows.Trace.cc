@@ -2,9 +2,9 @@
 #include "Windows.API.hh"
 
 #include <csignal>
-export module vt.Windows.Trace;
+export module Vitro.Windows.Trace;
 
-import vt.Trace.CrashHandler;
+import Vitro.Trace.CrashHandler;
 
 namespace vt::windows
 {

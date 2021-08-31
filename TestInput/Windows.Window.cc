@@ -3,14 +3,14 @@
 #include "Windows.API.hh"
 
 #include <string_view>
-export module vt.Windows.Window;
+export module Vitro.Windows.Window;
 
-import vt.App.AppContextBase;
-import vt.App.WindowBase;
-import vt.Core.Rectangle;
-import vt.Core.Unique;
-import vt.Core.Vector;
-import vt.Windows.Utils;
+import Vitro.App.AppContextBase;
+import Vitro.App.WindowBase;
+import Vitro.Core.Rectangle;
+import Vitro.Core.Unique;
+import Vitro.Core.Vector;
+import Vitro.Windows.Utils;
 
 namespace vt::windows
 {
@@ -26,49 +26,49 @@ namespace vt::windows
 			.height = static_cast<unsigned>(CW_USEDEFAULT),
 		};
 
-		Window(std::string_view title, Rectangle rect) : window(make_window(title, rect))
+		Window(std::string_view title, Rectangle rect) : window(makeWindow(title, rect))
 		{}
 
 		void open() final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 			::ShowWindow(window.get(), SW_RESTORE);
 		}
 
 		void close() final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 			::ShowWindow(window.get(), SW_HIDE);
 		}
 
 		void maximize() final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 			::ShowWindow(window.get(), SW_MAXIMIZE);
 		}
 
 		void minimize() final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 			::ShowWindow(window.get(), SW_MINIMIZE);
 		}
 
-		void enable_cursor() final override
+		void enableCursor() final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 
-			is_cursor_enabled = true;
+			isCursorEnabled = true;
 			while(::ShowCursor(true) < 0)
 			{}
 
 			::ClipCursor(nullptr);
 		}
 
-		void disable_cursor() final override
+		void disableCursor() final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 
-			is_cursor_enabled = false;
+			isCursorEnabled = false;
 			while(::ShowCursor(false) >= 0)
 			{}
 
@@ -78,9 +78,9 @@ namespace vt::windows
 			::ClipCursor(&rect);
 		}
 
-		Extent get_size() const final override
+		Extent getSize() const final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 
 			RECT rect;
 			::GetWindowRect(window.get(), &rect);
@@ -90,15 +90,15 @@ namespace vt::windows
 			};
 		}
 
-		void set_size(Extent size) final override
+		void setSize(Extent size) final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 			::SetWindowPos(window.get(), nullptr, 0, 0, size.width, size.height, SWP_NOMOVE | SWP_NOZORDER);
 		}
 
-		Int2 get_position() const final override
+		Int2 getPosition() const final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 
 			RECT rect;
 			::GetWindowRect(window.get(), &rect);
@@ -108,35 +108,35 @@ namespace vt::windows
 			};
 		}
 
-		void set_position(Int2 position) final override
+		void setPosition(Int2 position) final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 			::SetWindowPos(window.get(), nullptr, position.x, position.y, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
 		}
 
-		std::string get_title() const final override
+		std::string getTitle() const final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 
 			int length = ::GetWindowTextLengthW(window.get());
 
 			std::wstring title(length, L'\0');
 			::GetWindowTextW(window.get(), title.data(), length + 1);
 
-			return narrow_string(title);
+			return narrowString(title);
 		}
 
-		void set_title(std::string_view const title) final override
+		void setTitle(std::string_view const title) final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 
-			auto widened_title = widen_string(title);
-			::SetWindowTextW(window.get(), widened_title.data());
+			auto widenedTitle = widenString(title);
+			::SetWindowTextW(window.get(), widenedTitle.data());
 		}
 
-		Rectangle client_area() const final override
+		Rectangle clientArea() const final override
 		{
-			ensure_call_is_on_main_thread();
+			ensureCallIsOnMainThread();
 
 			RECT rect;
 			::GetClientRect(window.get(), &rect);
@@ -156,17 +156,17 @@ namespace vt::windows
 	private:
 		Unique<HWND, ::DestroyWindow> window;
 
-		static decltype(window) make_window(std::string_view title, Rectangle rect)
+		static decltype(window) makeWindow(std::string_view title, Rectangle rect)
 		{
-			auto widened_title	= widen_string(title);
-			auto instance_handle = static_cast<HINSTANCE>(AppContextBase::get().handle());
+			auto widenedTitle	= widenString(title);
+			auto instanceHandle = static_cast<HINSTANCE>(AppContextBase::get().handle());
 
-			HWND raw_window = ::CreateWindowExW(0, WindowClassName, widened_title.data(), WS_OVERLAPPEDWINDOW, rect.x, rect.y,
-											   rect.width, rect.height, nullptr, nullptr, instance_handle, nullptr);
-			decltype(window) fresh_window(raw_window);
-			vt_ensure(raw_window, "Failed to create window.");
+			HWND rawWindow = ::CreateWindowExW(0, WindowClassName, widenedTitle.data(), WS_OVERLAPPEDWINDOW, rect.x, rect.y,
+											   rect.width, rect.height, nullptr, nullptr, instanceHandle, nullptr);
+			decltype(window) freshWindow(rawWindow);
+			vtEnsure(rawWindow, "Failed to create window.");
 
-			return fresh_window;
+			return freshWindow;
 		}
 	};
 }
